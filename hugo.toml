@@ -1,0 +1,81 @@
+baseURL = ''
+languageCode = 'en-us'
+title = "d0natell0's Blog"
+theme = 'hello-friend-ng'
+paginate = 10
+
+[params]
+  dateform = "Jan 2, 2006"
+  dateformShort = "Jan 2"
+  dateformNum = "2006-01-02"
+  dateformNumTime = "2006-01-02 15:04"
+  # backgroundImage = "/bg-1.jpg"
+  enableThemeToggle = true
+ 
+  # Subtitle for home
+  homeSubtitle = "Recent Posts"
+
+  # Set disableReadOtherPosts to true in order to hide the links to other posts.
+  disableReadOtherPosts = false
+
+  # Integrate Javascript files or stylesheets by adding the url to the external assets or by
+  # linking local files with their path relative to the static folder, e.g. "css/styles.css"
+  #
+  customCSS = []
+  customJS  = []
+
+  [permalinks]
+  posts = "/posts/:year/:title/"
+  tools = "/tools/:year/:title/"
+  news = "/news/:year/:title/"
+
+  [params.logo]
+    logoMark     = ">"
+    logoText     = "D0natell0's Blog"
+    logoHomeLink = "/"
+    # Set true to remove the logo cursor entirely.
+    # logoCursorDisabled = false
+    # Set to a valid CSS color to change the cursor in the logo.
+     logoCursorColor    = "#1BDA5E"
+    # Set to a valid CSS time value to change the animation duration, "0s" to disable.
+    # logoCursorAnimate  = "2s"
+    # Append the current url pathname to logoText 
+    # logoCursorPathname = true
+
+
+  [params.portrait]
+     path     = "./nasa-yusaki.jpg"
+     alt      = "Portrait"
+     maxWidth = "100px"
+
+  [params.footer]
+    trademark = 2024
+    rss = true
+    copyright = true
+    author = true
+
+    topText = []
+    bottomText = [
+      "Powered by <a href=\"http://gohugo.io\">Hugo</a>",
+      "Made with &#10084; by d0natell0"
+    ]
+
+  [languages]
+    [languages.en.params.logo]
+      # logoText = "d0natell0"
+      logoHomeLink = ""
+
+[[menu.main]]
+    identifier = "blog"
+    name       = "Posts"
+    url        = "/posts"
+
+[[menu.main]]
+    identifier = "tools"
+    name       = "Tools"
+    url        = "/pentesting-tools"
+
+[[menu.main]]
+    identifier = "news"
+    name       = "News"
+    url        = "/news"

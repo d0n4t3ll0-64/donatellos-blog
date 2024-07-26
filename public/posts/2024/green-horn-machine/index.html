@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="">
+<meta name="description" content="First Steps Nmap initial scan We start the enumeration of the target with a recognition scan
+sudo nmap -p- --min-rate 5000 -n -Pn 10.129.50.188 -oA first_scan_10.129.50.188 Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-07-24 17:59 -03 Nmap scan report for 10.129.50.188 Host is up (0.19s latency). Not shown: 65532 closed tcp ports (reset) PORT STATE SERVICE 22/tcp open ssh 80/tcp open http 3000/tcp open ppp Nmap done: 1 IP address (1 host up) scanned in 19." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="" />
+<link rel="canonical" href="//localhost:1313/posts/2024/green-horn-machine/" />
+
+
+    <title>
+        
+            Green Horn Machine :: d0natell0&#39;s Blog 
+        
+    </title>
+
+
+
+
+
+<link rel="stylesheet" href="/main.949191c1dcc9c4a887997048b240354e47152016d821198f89448496ba42e491.css" integrity="sha256-lJGRwdzJxKiHmXBIskA1TkcVIBbYIRmPiUSElrpC5JE=">
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="msapplication-TileColor" content="">
+
+
+
+  <meta itemprop="name" content="Green Horn Machine">
+  <meta itemprop="description" content="First Steps Nmap initial scan We start the enumeration of the target with a recognition scan
+sudo nmap -p- --min-rate 5000 -n -Pn 10.129.50.188 -oA first_scan_10.129.50.188 Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-07-24 17:59 -03 Nmap scan report for 10.129.50.188 Host is up (0.19s latency). Not shown: 65532 closed tcp ports (reset) PORT STATE SERVICE 22/tcp open ssh 80/tcp open http 3000/tcp open ppp Nmap done: 1 IP address (1 host up) scanned in 19.">
+  <meta itemprop="datePublished" content="2024-07-25T22:35:00+03:00">
+  <meta itemprop="dateModified" content="2024-07-25T22:35:00+03:00">
+  <meta itemprop="wordCount" content="1238">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Green Horn Machine">
+  <meta name="twitter:description" content="First Steps Nmap initial scan We start the enumeration of the target with a recognition scan
+sudo nmap -p- --min-rate 5000 -n -Pn 10.129.50.188 -oA first_scan_10.129.50.188 Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-07-24 17:59 -03 Nmap scan report for 10.129.50.188 Host is up (0.19s latency). Not shown: 65532 closed tcp ports (reset) PORT STATE SERVICE 22/tcp open ssh 80/tcp open http 3000/tcp open ppp Nmap done: 1 IP address (1 host up) scanned in 19.">
+
+
+
+
+
+
+
+    <meta property="article:published_time" content="2024-07-25 22:35:00 &#43;0300 &#43;0300" />
+
+
+
+
+
+
+
+
+
+
+
+    </head>
+
+    
+        <body>
+    
+    
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="//localhost:1313/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">&gt;</span>
+            <span class="logo__text ">
+                D0natell0&#39;s Blog</span>
+            <span class="logo__cursor" style=
+                  "
+                   background-color:#1BDA5E;
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="/news">News</a></li><li><a href="/posts">Posts</a></li><li><a href="/pentesting-tools">Tools</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+                <span class="theme-toggle not-selectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+   <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+   3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+   13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+ </svg></span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        6 minutes
+
+        
+      </p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="//localhost:1313/posts/2024/green-horn-machine/">Green Horn Machine</a>
+      </h1>
+
+      
+
+      
+        <figure class="post-cover">
+          <img src="//localhost:1313/green-horn-img/greenhorn-banner.png" alt="Green Horn Machine" />
+          
+          
+        </figure>
+      
+
+      
+
+      <div class="post-content">
+        <hr>
+<h2 id="first-steps">First Steps</h2>
+<h3 id="nmap-initial-scan">Nmap initial scan</h3>
+<p>We start the enumeration of the target with a recognition scan</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span> sudo nmap -p- --min-rate <span style="color:#ae81ff">5000</span> -n -Pn 10.129.50.188 -oA first_scan_10.129.50.188
+</span></span><span style="display:flex;"><span>Starting Nmap 7.94SVN <span style="color:#f92672">(</span> https://nmap.org <span style="color:#f92672">)</span> at 2024-07-24 17:59 -03
+</span></span><span style="display:flex;"><span>Nmap scan report <span style="color:#66d9ef">for</span> 10.129.50.188
+</span></span><span style="display:flex;"><span>Host is up <span style="color:#f92672">(</span>0.19s latency<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>Not shown: <span style="color:#ae81ff">65532</span> closed tcp ports <span style="color:#f92672">(</span>reset<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>PORT     STATE SERVICE
+</span></span><span style="display:flex;"><span>22/tcp   open  ssh
+</span></span><span style="display:flex;"><span>80/tcp   open  http
+</span></span><span style="display:flex;"><span>3000/tcp open  ppp
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Nmap <span style="color:#66d9ef">done</span>: <span style="color:#ae81ff">1</span> IP address <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span> host up<span style="color:#f92672">)</span> scanned in 19.09 seconds
+</span></span></code></pre></div><p>The result shows that <em>ports 22(SSH), 80(HTTP) and 3000(ppp) are open</em>, in particular the port 3000 is striking because it is not a recognized service at first sight. Now it is time to see which versions of the services are running to get more information about them.</p>
+<h3 id="services-version-scan">Services version scan</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo nmap -p22,80,300 -sV --min-rate <span style="color:#ae81ff">5000</span> 10.129.50.188 -oA services_scan_10.129.50.188
+</span></span><span style="display:flex;"><span>Starting Nmap 7.94SVN <span style="color:#f92672">(</span> https://nmap.org <span style="color:#f92672">)</span> at 2024-07-24 18:01 -03
+</span></span><span style="display:flex;"><span>Nmap scan report <span style="color:#66d9ef">for</span> 10.129.50.188
+</span></span><span style="display:flex;"><span>Host is up <span style="color:#f92672">(</span>0.18s latency<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>PORT    STATE  SERVICE VERSION
+</span></span><span style="display:flex;"><span>22/tcp  open   ssh     OpenSSH 8.9p1 Ubuntu 3ubuntu0.10 <span style="color:#f92672">(</span>Ubuntu Linux; protocol 2.0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>80/tcp  open   http    nginx 1.18.0 <span style="color:#f92672">(</span>Ubuntu<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>3000/tcp open  ppp     unknown 
+</span></span><span style="display:flex;"><span>Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span style="display:flex;"><span>Nmap <span style="color:#66d9ef">done</span>: <span style="color:#ae81ff">1</span> IP address <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span> host up<span style="color:#f92672">)</span> scanned in 8.78 seconds
+</span></span></code></pre></div><p><em>With the result of the scan we have an idea what we are dealing with but we still don&rsquo;t know what is in port 3000</em>. We will investigate soon, for the moment let&rsquo;s see what website is running on port 80.</p>
+<p><em>We put the ip in the browser bar</em> but it will tell us that it does not find the domain (http:// greenhorn.htb) so we must add it to the <em>/etc/hosts file</em>.
+10.129.50.188 greenhorn.htb</p>
+
+    <img src="../../../green-horn-img/etc-host-ip.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Now if we go back to the browser and see that we already have access to the home page hosted on port 80.</p>
+
+    <img src="../../../green-horn-img/website-homepage.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p><em>After investigating the page a little we can see that you can access a login panel for the site administrator and also see that it is using a CMS (content management system) called Pluck</em>.</p>
+<p>
+    <img src="../../../green-horn-img/login-admin-panel.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+(nothing hidden in the source-code)</p>
+<p><em>In the footer we can see the version of Pluck that is running, it is version 4.7.18</em>. Now that we know this we can see if there is an exploit for Pluck in the version we found running on the site.</p>
+<hr>
+<h3 id="looking-for-pluck-exploits">Looking for Pluck exploits</h3>
+<p>If we do a google search for pluck exploit, we can see that there is an exploit just for that version in which abuses a misconfigured file that allows us to upload a module in which we can insert malicious code, <em>the format must be .zip and must be written in PHP</em>. So we could use <em>a reverse shell payload</em> and thus be able to perform a remote code execution <em>(RCE)</em>.</p>
+<p>
+    <img src="../../../green-horn-img/exploit-db-finding.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+https: //www.exploit-db.com/exploits/51592</p>
+<hr>
+<h3 id="checking-whats-in-the-port-3000">Checking whats in the port 3000</h3>
+<p>To see that it is hosted on port 3000 enter the url “greenhorn.htb:3000” in the browser.</p>
+<blockquote>
+<p>It appears that Greenhorn is a self-hosted version control system for git that you install and manage on your own servers or infrastructure, rather than using an external hosting platform such as GitHub, GitLab.com or Bitbucket.</p>
+</blockquote>
+
+    <img src="../../../green-horn-img/greenhorn-homepage.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p><em>I explored the site a bit but the only place that catches our attention is the explore section.</em></p>
+
+    <img src="../../../green-horn-img/port-3000-exploring.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+
+    <img src="../../../green-horn-img/finding-greenhorn-serversite.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p><em>What we see here seems to be the internal structure of Pluck</em>, because after seeing the <em>robots.txt</em> file that showed that there are the directories called /data/ and /files/, we can also see that this is here a file called login.php (remember that if we clicked admin we got redirect to login.php). So we are well on our way.</p>
+
+    <img src="../../../green-horn-img/robots-txt.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>After a while reading the files and looking at the folders <em>I could see that in login.php from line 38 to 43 we see that it says that this block of code is for when the service is already installed, which is our case</em>. And that <em>the password is stored in pass.php and is required only once</em>, it is also the same for the token, so let&rsquo;s see what we find in pass.php and token.php.</p>
+
+    <img src="../../../green-horn-img/finding-location-default-credentials.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<h4 id="passphp">pass.php</h4>
+<p>Looks like we have a hash to crack</p>
+
+    <img src="../../../green-horn-img/finding-password-default-hash.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<h4 id="tokenphp">token.php</h4>
+<p>We have a token that we can use to authenticate our requests.</p>
+
+    <img src="../../../green-horn-img/finding-token-hash.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Now that we have found this hash that could be the possible admin password, let&rsquo;s go to crackstation to get the decrypted password.</p>
+<p><a href="https://crackstation.net/">Crackstation</a></p>
+
+    <img src="../../../green-horn-img/cracking-the-hash-founded.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p><em>The password is: iloveyou1</em></p>
+<hr>
+<h3 id="using-the-password-found-in-the-admin-login-page">Using the password found in the admin login page</h3>
+<p>After finding the password, we can use it to access the admin page.</p>
+
+    <img src="../../../green-horn-img/putting-the-correct-password.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+
+    <img src="../../../green-horn-img/password-success.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>And there we have it!! we can now access the main administrator panel</p>
+
+    <img src="../../../green-horn-img/admin-panel-modules-manage.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<hr>
+<h3 id="the-exploiting-phase">The exploiting phase</h3>
+<p>We already know from the exploit that we can load a module with malicious code to the site and we can abuse it by inserting a reverse shell.</p>
+<p><em>We can use the one from pentestmonkey</em>
+<a href="https://github.com/pentestmonkey/php-reverse-shell">Revershell</a></p>
+<p>Once we have cloned the git repository and have the php-reverse-shell in our path we can compress it and get it ready to use.</p>
+<p><strong>(Remember to change in the file rever-shell.php the IP and port)</strong></p>
+
+    <img src="../../../green-horn-img/zip-reverse-shell-payload.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>So now we go back to the admin panel, go to the module manager and upload our payload.</p>
+
+    <img src="../../../green-horn-img/use-of-exploit-uploading-zip.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Now we just have to listen with the netcat tool (nc) on the chosen port and wait for the connection. If everything goes well we should have access to the machine.</p>
+<blockquote>
+<p>Depending on the connection you may have to make several attempts before you get a connection, something I found is that as soon as the banner appeared saying that the file upload was successful I stopped the page reload&hellip; for some reason that prevented the connection.</p>
+</blockquote>
+
+    <img src="../../../green-horn-img/ncat-server-access.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Let&rsquo;s get a nice shell using the old python trick.</p>
+
+    <img src="../../../green-horn-img/reverse-shell-server-access.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Immediately we go to the <em>/home directory where we will see the directories for the git and junior users</em>. If we go to git we will not find anything, on the other hand in the junior directory there are interesting things.</p>
+
+    <img src="../../../green-horn-img/reverse-shell-foothold.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p><em>lets try the password we found ;)</em></p>
+
+    <img src="../../../green-horn-img/user-access-server.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Running as the user Junior we can get the first flag
+also i tried sudo -l to check if there is some sudo rules for junior&hellip; but there is none.</p>
+
+    <img src="../../../green-horn-img/getting-user-flag-sudo-failed.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<hr>
+<h3 id="privileges-escalation-root-access">Privileges escalation (Root access)</h3>
+<p>To get root access we have to investigate <em>a file that its called &lsquo;Using OpenVAS.pdf&rsquo;</em> we have to create a .pdf of the file first and then open a python server on the target machine we can get that file.</p>
+
+    <img src="../../../green-horn-img/copying-file-openvas-http-server.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>With the file on our machine we can check what&rsquo;s inside it</p>
+
+    <img src="../../../green-horn-img/openvas-file-opened.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Once we open it we can see that people from greenhorn <em>gave the junior the password for the root user</em> but it is pixelated , <em>we have to use a tool called poppler-utils</em></p>
+
+    <img src="../../../green-horn-img/installing-poppler-utils.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Then we use the tool to create a file that extracts the pixels from it</p>
+
+    <img src="../../../green-horn-img/use-poppler-utils-pdf.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<blockquote>
+<p>PPM is short for Portable Pixmap Format. Although these files are rare these days, you can spot one by looking out for the .PPM extension.</p>
+</blockquote>
+<p>Once we did this, <em>we need another tool</em> to get the password. <em>This one is called Depix</em> and we can get it at <a href="https://github.com/spipm/Depix">Depix</a></p>
+
+    <img src="../../../green-horn-img/depix-tool-clone.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+
+    <img src="../../../green-horn-img/use-depix-tool.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Once the de-pixelation process is finished, we open the file that the tool gave us and we will see the password for the root user.</p>
+
+    <img src="../../../green-horn-img/depixelated-root-password.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p><em>The password is: sidefromsidetheothersidesidefromsidetheotherside</em> (What a password dude..)</p>
+<p>Now that we have the root user&rsquo;s password we access his account and we can get the last flag to finish the machine!</p>
+
+    <img src="../../../green-horn-img/root-access-server.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p><em>The root flag is right in front of our eyes let&rsquo;s get it!</em></p>
+
+    <img src="../../../green-horn-img/root-flag.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+
+      </div>
+    </article>
+
+    <hr />
+
+    <div class="post-info">
+      
+      
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        1238 Words
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        
+          2024-07-25 16:35
+        
+
+         
+          
+        
+      </p>
+    </div>
+
+    
+    <div class="pagination">
+        
+
+        <div class="pagination__buttons">
+            
+
+            
+            <span class="button next">
+                <a href="//localhost:1313/posts/2024/lame-machine-htb/">
+                    <span class="button__text">Lame machine HTB</span>
+                    <span class="button__icon">→</span>
+                </a>
+            </span>
+            
+        </div>
+    </div>
+
+
+    
+
+    
+
+    
+
+  </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2024</span>
+            <span><a href="//localhost:1313/"></a></span>
+            <span></span>
+            <span><a href="//localhost:1313/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+            
+        </div>
+    </div>
+    
+    
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span><span>Made with &#10084; by d0natell0</span>
+        </div>
+    </div>
+    
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+<script type="text/javascript" src="/bundle.min.85fad2de4f13fec3bcb3b3cb10430cdb44a7b4a9749b32938241a5c6e77718df7624f1002b880521fdc26e24ec1077fda214bf1cb36ee3045510760d09638cae.js" integrity="sha512-hfrS3k8T/sO8s7PLEEMM20SntKl0mzKTgkGlxud3GN92JPEAK4gFIf3CbiTsEHf9ohS/HLNu4wRVEHYNCWOMrg=="></script>
+
+
+
+
+    </body>
+</html>

