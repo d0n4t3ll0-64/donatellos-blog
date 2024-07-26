@@ -1,0 +1,54 @@
+{{ define "body" }}
+
+<body class="{{ if .Site.Params.backgroundImage }} background-image"
+    style="background-image: url('{{ .Site.Params.backgroundImage }}');" {{ else }}"{{ end }}>
+    {{ end }}
+
+    {{ define "main" }}
+    <main aria-role="main">
+        <div>
+            {{ if .Site.Params.Portrait.Path }}
+            <img src="{{ .Site.Params.Portrait.Path }}" class="circle" alt="{{ .Site.Params.Portrait.Alt }}"
+                style="margin-top: 2rem;" />
+            {{ end }}
+
+            <h1>{{ .Site.Title }}</h1>
+
+            {{ partial "subtitle.html" . }}
+
+            {{ $paginator := .Paginate (where .Site.RegularPages "Section" "posts")}}
+
+            <div class="posts post-bg">
+                <h3>HTB-Machines</h3>
+                {{ range $paginator.Pages.GroupByDate "2006" }}
+                <div class="posts-group">
+                    <div class="post-year">{{ .Key }}</div>
+
+                    <ul class="posts-list">
+                        {{ range .Pages }}
+                        <li class="post-item">
+                            <a href="{{ .Permalink }}" class="post-item-inner">
+                                <span class="post-title">{{.Title}}</span>
+                                <span class="post-day">
+                                    {{ if .Site.Params.dateformShort }}
+                                    {{ .Date.Format .Site.Params.dateformShort }}
+                                    {{ else }}
+                                    {{ .Date.Format "Jan 2"}}
+                                    {{ end }}
+                                </span>
+                            </a>
+                        </li>
+                        {{ end }}
+                    </ul>
+                </div>
+                {{ end }}
+            </div>
+
+            {{- with .Site.Params.social }}
+            <div>
+                {{ partial "social-icons.html" . }}
+            </div>
+            {{- end }}
+        </div>
+    </main>
+    {{ end }}
