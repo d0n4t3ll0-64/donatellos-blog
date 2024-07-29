@@ -9,7 +9,7 @@ draft: false
 
 ## Introduction
 
-This machine is recent and does not have any information other than that it is a Linux machine. From the name we 
+This machine is recent and does not have any information other than that it is a Linux machine. From the name we
 can deduce that it has to do with the issue of permissions on files and abuse it.
 
 ---
@@ -81,7 +81,7 @@ Nmap done: 1 IP address (1 host up) scanned in 20.98 seconds
 
 ```
 
-### Results
+### Findings
 
 -puerto 22 OpenSSH 8.9p1 (Ubuntu Linux; protocol 2.0)
 -puerto 80 Apache httpd 2.4.52
