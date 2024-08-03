@@ -9,10 +9,10 @@ paginate = 10
   dateformShort = "Jan 2"
   dateformNum = "2006-01-02"
   dateformNumTime = "2006-01-02 15:04"
-  # backgroundImage = "/bg-1.jpg"
   enableThemeToggle = true
-  enableGlobalLanguageMenu = true
  
+  # backgroundImage = "/bg-1.jpg"
+  
   # Subtitle for home
   homeSubtitle = "Recent Posts"
 
@@ -61,19 +61,8 @@ paginate = 10
       "Made with &#10084; by d0natell0"
     ]
 
-  [languages]
-    [Language.es]
-      title = El blog de D0natell0
-      keywords = "blog, cyber seguridad, hacking etico, maquinas de HTB"
-      readOtherPosts = "Leer otros posteos"
 
-    [languages.es.params]
-      subtitle = "Posteos Recientes"
-
-      [languages.es.params.logo]
-        logoText = "d0natell0"
-        logoHomeLink = "/"
-
+[menu]
 [[menu.main]]
     identifier = "blog"
     name       = "Posts"
