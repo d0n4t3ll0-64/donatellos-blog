@@ -43,7 +43,6 @@ paginate = 10
     # Append the current url pathname to logoText 
     # logoCursorPathname = true
 
-
   [params.portrait]
      path     = "./nasa-yusaki.jpg"
      alt      = "Portrait"
