@@ -51,4 +51,4 @@ And it is there where hacktivists are born, people with a great sense of justice
 
 We will have to wait to see what happens with the latter and to be aware of new news.
 
-*Written by d0natell0*
+#### Written by d0natell0
