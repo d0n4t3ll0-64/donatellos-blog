@@ -24,7 +24,7 @@ The Anonymous group began a direct attack on servers, websites and even a Venezu
 
 These activists support their actions by stating that Maduro is a tyrannical dictator who has the Venezuelan people under a blanket of terror and misery and that they will not allow such an aberration against the Venezuelan people to continue occurring.
 
-In an era where everything is connected every day it is more common to see how battles are not only fought in the streets but also one of the key elements for victory is through information technology and the Internet. 
+In an era where everything is connected every day it is more common to see how battles are not only fought in the streets but also one of the key elements for victory is through information technology and the Internet.
 
 Whether what the Anonymous group is doing is right or not will depend on each individual. As an ethical hacker I always have in mind a phrase that many mentors have told me.
 
